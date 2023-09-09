@@ -28,7 +28,7 @@ def get_train() -> DataFrame:
 
 
 def distance(df: DataFrame) -> float:
-    df['PredictedPriceLog'] = df['PredictedPrice'].apply(log)
+    df['PredictedPriceLog'] = df['PredictedPrice'].apply(lambda x: log(x) if x>0 else 0)
     df['SalePriceLog'] = df['SalePrice'].apply(log)
     df['Diff'] = df['PredictedPriceLog'] - df['SalePriceLog']
     df['DiffSq'] = df['Diff'].apply(lambda x: x * x)

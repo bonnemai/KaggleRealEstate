@@ -12,10 +12,6 @@ valid_ds_pd = valid_ds_pd.select_dtypes(include=['float64', 'int64'])
 print("TensorFlow v" + tf.__version__)
 print("TensorFlow Decision Forests v" + tfdf.__version__)
 
-# RandomForestModel
-# GradientBoostedTreesModel
-# CartModel
-# DistributedGradientBoostedTreesModel
 
 
 label = 'SalePrice'
@@ -26,7 +22,13 @@ valid_ds = tfdf.keras.pd_dataframe_to_tf_dataset(valid_ds_pd, label=label, task=
 # model.fit(train_ds)
 # print(model.summary())
 
-rf = tfdf.keras.RandomForestModel(task=tfdf.keras.Task.REGRESSION)
+# RandomForestModel
+# GradientBoostedTreesModel
+# CartModel
+# DistributedGradientBoostedTreesModel
+rf = tfdf.keras.GradientBoostedTreesModel(task=tfdf.keras.Task.REGRESSION)
+# rf = tfdf.keras.DistributedGradientBoostedTreesModel( task=tfdf.keras.Task.REGRESSION)
+
 rf.compile(metrics=["mse"])
 rf.fit(x=train_ds)
 inspector = rf.make_inspector()
