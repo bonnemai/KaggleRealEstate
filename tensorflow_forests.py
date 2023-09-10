@@ -23,8 +23,8 @@ valid_ds = tfdf.keras.pd_dataframe_to_tf_dataset(valid_ds_pd, label=label, task=
 # GradientBoostedTreesModel
 # CartModel
 # DistributedGradientBoostedTreesModel
-# model = tfdf.keras.GradientBoostedTreesModel(task=tfdf.keras.Task.REGRESSION)
-model = tfdf.keras.CartModel( task=tfdf.keras.Task.REGRESSION)
+model = tfdf.keras.RandomForestModel(task=tfdf.keras.Task.REGRESSION)
+# model = tfdf.keras.GradientBoostedTreesModel( task=tfdf.keras.Task.REGRESSION)
 model.compile(metrics=["mse"])
 model.fit(x=train_ds)
 print(model.summary())

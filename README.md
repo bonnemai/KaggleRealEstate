@@ -13,8 +13,10 @@ source ./venv/bin/activate
 * All Houses with a price = SqFtMean x area: Distance = 8.6200
 * TensorFlow: RandomForestModel: Distance = 2.2830
 * TensorFlow: RandomForestModel Log: Distance = 2.2105
+* TensorFlow: RandomForestModel Log with int: Distance = 2.1824
 * TensorFlow: GradientBoostedTreesModel: Distance = 1.6900
 * TensorFlow: GradientBoostedTreesModel on logs: Distance = 1.5907
+* TensorFlow: GradientBoostedTreesModel on logs with int: Distance = 1.5206
 * TensorFlow: CartModel: Distance = 3.4257
 * TensorFlow: CartModel on logs: Distance = 3.2653
 * Multi Linear Regression: Distance: Distance: 11.0667
@@ -39,9 +41,7 @@ source ./venv/bin/activate
 * Neural Network Log: Distance: 384.4476
 
 # TODO:
-* Remove outlyers?
-* Enrich the data:
-- Localisation should be a string
+* Remove outlyers? -> Visualize?
 * Neuronal Network: https://realpython.com/python-ai-neural-network/
 * tensorflow/keras: https://keras.io
 * https://github.com/dmlc/xgboost
@@ -50,6 +50,7 @@ source ./venv/bin/activate
 * Enrich the data: 
 - Dates and time to last transactions
 - Add Price per sqft to the inputs 
+- Localisation should be a string
 * Commit to GitHub
 * Multi Regression
 
