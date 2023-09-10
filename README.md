@@ -12,9 +12,11 @@ source ./venv/bin/activate
 * All Houses with a price = mean: Distance = 7.1158
 * All Houses with a price = SqFtMean x area: Distance = 8.6200
 * TensorFlow: RandomForestModel: Distance = 2.2830
+* TensorFlow: RandomForestModel Log: Distance = 2.2105
 * TensorFlow: GradientBoostedTreesModel: Distance = 1.6900
+* TensorFlow: GradientBoostedTreesModel on logs: Distance = 1.5907
 * TensorFlow: CartModel: Distance = 3.4257
-* TensorFlow: GradientBoostedTreesModel: Distance = Nope
+* TensorFlow: CartModel on logs: Distance = 3.2653
 * Multi Linear Regression: Distance: Distance: 11.0667
 * Multi Linear Regression Lasso: Distance: Distance: 11.0681
 * Multi Linear Regression Ridge: Distance: Distance: 11.0682
@@ -22,6 +24,7 @@ source ./venv/bin/activate
 * Multi Linear Regression SGDRegressor: Distance: Distance: 229.5353
 * ElasticNet: 11.0439
 * ElasticNetCV: 3.94
+* ElasticNetCV on logs: 2.9457
 * Lars: 49.0597
 * LarsCV: 11.9613
 * OrthogonalMatchingPursuit: 3.8870
@@ -32,18 +35,24 @@ source ./venv/bin/activate
 * RANSACRegressor: 11.1617
 * TheilSenRegressor: 92.1564
 * PoissonRegressor: 7.1158
+* Neural Network: Distance: 12.5033
+* Neural Network Log: Distance: 384.4476
 
 # TODO:
 * Remove outlyers?
+* Enrich the data:
+- Localisation should be a string
+* Neuronal Network: https://realpython.com/python-ai-neural-network/
+* tensorflow/keras: https://keras.io
+* https://github.com/dmlc/xgboost
+
+# Done: 
 * Enrich the data: 
 - Dates and time to last transactions
-- Localisation should be a string
 - Add Price per sqft to the inputs 
 * Commit to GitHub
-* Regression
-* Neuronal Network: https://realpython.com/python-ai-neural-network/ 
-* FaceBook/ Meta API
-* tensorflow/keras
+* Multi Regression
+
 
 TensorFlow: INVALID_ARGUMENT: 
 The Distributed Gradient Boosted Tree learner does not support training from in-memory datasets 

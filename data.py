@@ -2,6 +2,8 @@ from pandas import read_csv, DataFrame
 from math import log, sqrt
 from datetime import date
 
+use_log: bool = True
+
 
 def get_data() -> DataFrame:
     df = read_csv('./data/train.csv')
@@ -9,9 +11,10 @@ def get_data() -> DataFrame:
     df['DateSold1'] = df.apply(lambda x: date(x['YrSold'], x['MoSold'], 1), axis=1)
     df['DateSold15'] = df.apply(lambda x: date(x['YrSold'], x['MoSold'], 15), axis=1)
     df['DateSold28'] = df.apply(lambda x: date(x['YrSold'], x['MoSold'], 28), axis=1)
-    max_date = date(2010, 7, 1)
+    max_date: date = date(2010, 7, 1)
     df['nbDays'] = df.apply(lambda x: (x['DateSold1'] - max_date).days, axis=1)
-
+    if use_log:
+        df['SalePriceLog'] = df['SalePrice'].apply(log)  # Be careful... remove if from some regressions.
     return df.drop('Id', axis=1)
 
 
@@ -21,17 +24,20 @@ def get_valid(random_state: int = 5) -> DataFrame:
 
 
 def get_train() -> DataFrame:
-    df = get_data()
-    sample = get_valid()
-    df1 = df[~df.index.isin(sample.index)]
-    return df1
+    df: DataFrame = get_data()
+    sample: DataFrame = get_valid()
+    df1: DataFrame = df[~df.index.isin(sample.index)].copy()
+    return df1.drop('SalePrice', axis=1) if use_log else df1
 
 
 def distance(df: DataFrame) -> float:
-    df['PredictedPriceLog'] = df['PredictedPrice'].apply(lambda x: log(x) if x>0 else 0)
-    df['SalePriceLog'] = df['SalePrice'].apply(log)
+    if 'PredictedPrice' in df:
+        df['PredictedPriceLog'] = df['PredictedPrice'].apply(lambda x: log(x) if x > 0 else 0)
+    if 'SalePriceLog' not in df:
+        df['SalePriceLog'] = df['SalePrice'].apply(log)
     df['Diff'] = df['PredictedPriceLog'] - df['SalePriceLog']
-    df['DiffSq'] = df['Diff'].apply(lambda x: x * x)
+    mean: float = df['Diff'].mean()
+    df['DiffSq'] = df['Diff'].apply(lambda x: (x - mean) * (x - mean))
     return sqrt(df['DiffSq'].sum())
 
 

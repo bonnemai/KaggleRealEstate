@@ -2,3 +2,5 @@ pandas
 scipy
 tensorflow_decision_forests
 scikit-learn
+auto-sklearn
+xgboost
