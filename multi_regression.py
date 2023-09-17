@@ -1,6 +1,6 @@
 
 from data import get_valid, get_train, distance
-from sklearn import linear_model
+from sklearn import linear_model, neighbors
 
 train_ds_pd = get_train()
 valid_ds_pd = get_valid()
@@ -13,12 +13,10 @@ y=train_ds_pd.pop('SalePriceLog')
 # regr = linear_model.Lasso(alpha=0.1)
 # regr = linear_model.RidgeCV()
 # regr = linear_model.SGDRegressor()
-regr = linear_model.ElasticNetCV()
+# regr = linear_model.ElasticNetCV()
 # regr = linear_model.OrthogonalMatchingPursuit()
 # regr = linear_model.PoissonRegressor()
-
-
-
+regr = neighbors.KNeighborsRegressor(n_neighbors=7)
 
 regr.fit(train_ds_pd, y)
 valid_ds_pd.pop('SalePriceLog')

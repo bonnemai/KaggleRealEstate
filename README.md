@@ -13,10 +13,10 @@ source ./venv/bin/activate
 * All Houses with a price = SqFtMean x area: Distance = 8.6200
 * TensorFlow: RandomForestModel: Distance = 2.2830
 * TensorFlow: RandomForestModel Log: Distance = 2.2105
-* TensorFlow: RandomForestModel Log with int: Distance = 2.1824
+* TensorFlow: RandomForestModel Log with int: Distance = 2.1824/ 2.3051
 * TensorFlow: GradientBoostedTreesModel: Distance = 1.6900
 * TensorFlow: GradientBoostedTreesModel on logs: Distance = 1.5907
-* TensorFlow: GradientBoostedTreesModel on logs with int: Distance = 1.5206
+* TensorFlow: GradientBoostedTreesModel on logs with int: Distance = 1.5206/ 2.1362
 * TensorFlow: CartModel: Distance = 3.4257
 * TensorFlow: CartModel on logs: Distance = 3.2653
 * Multi Linear Regression: Distance: Distance: 11.0667
@@ -27,6 +27,8 @@ source ./venv/bin/activate
 * ElasticNet: 11.0439
 * ElasticNetCV: 3.94
 * ElasticNetCV on logs: 2.9457
+* KNeighborsRegressor: 4.0763
+* KNeighborsRegressor (3): 4.0949
 * Lars: 49.0597
 * LarsCV: 11.9613
 * OrthogonalMatchingPursuit: 3.8870
@@ -63,3 +65,9 @@ If your dataset is small, use the (non distributed) Gradient Boosted Tree learne
 If your dataset is large, provide the dataset as a path (Yggdrasil Decision Forests) 
 or use a TF Distribution Strategy (TensorFlow Decision Forests). [Op:SimpleMLCheckStatus] name: 
 
+Variable Importance: INV_MEAN_MIN_DEPTH:
+    1.           "LotArea"  0.296142 ################
+    2.   "PricePerLotArea"  0.275424 #############
+    3.       "OverallQual"  0.216087 #####
+    4.         "GrLivArea"  0.195494 ##
+    5.          "1stFlrSF"  0.193637 ##
