@@ -1,7 +1,7 @@
 from pandas import read_csv, DataFrame, isnull, Series
 from math import log, sqrt
 from datetime import date
-from typing import List, Mapping
+from typing import List, Mapping, Optional, Tuple
 
 use_log: bool = True
 sale_price_log: str = 'SalePriceLog'
@@ -33,17 +33,18 @@ def enrich_with_int(df: DataFrame, int_list_map: Mapping[str, List[str]]) -> Dat
     return df
 
 
-def get_data() -> DataFrame:
-    df: DataFrame = read_csv('./data/train.csv')
-
+def get_data(type: str = 'train') -> DataFrame:
+    df: DataFrame = read_csv(f'./data/{type}.csv')
     df['DateSold1'] = df.apply(lambda x: date(x['YrSold'], x['MoSold'], 1), axis=1)
     df['DateSold15'] = df.apply(lambda x: date(x['YrSold'], x['MoSold'], 15), axis=1)
     df['DateSold28'] = df.apply(lambda x: date(x['YrSold'], x['MoSold'], 28), axis=1)
     max_date: date = date(2010, 7, 1)
     df['nbDays'] = df.apply(lambda x: (x['DateSold1'] - max_date).days, axis=1)
-    # df: DataFrame = enrich_with_int(df)
     return df.drop('Id', axis=1)
 
+def get_id(type: str = 'train') -> Series:
+    df: DataFrame = read_csv(f'./data/{type}.csv')
+    return df.pop('Id')
 
 def get_valid(random_state: int = 5) -> DataFrame:
     """
@@ -82,33 +83,30 @@ def distance(df: DataFrame) -> float:
     return sqrt(df['DiffSq'].sum())
 
 
-def train_valid_split():
+def train_valid_split(is_prod: bool = False) -> Tuple[DataFrame, DataFrame, Optional[Series]]:
     random_state = 5
-    df = get_data()
+    df: DataFrame = get_data()
     if use_log:
         df['SalePriceLog'] = df['SalePrice'].apply(log)
-    valid: DataFrame = df.sample(frac=.2, random_state=random_state)
-
-    train: DataFrame = df[~df.index.isin(valid.index)].copy()
+    if is_prod:
+        valid: DataFrame = get_data('test')
+        train: DataFrame = df
+    else:
+        valid: DataFrame = df.sample(frac=.2, random_state=random_state)
+        train: DataFrame = df[~df.index.isin(valid.index)].copy()
     train['PricePerLotArea'] = df['SalePrice'] / df['LotArea']
-    int_list_map :Mapping[str,List[str]]= get_int_list_map(train)
+    int_list_map: Mapping[str, List[str]] = get_int_list_map(train)
     train: DataFrame = enrich_with_int(train, int_list_map)
     valid: DataFrame = enrich_with_int(valid, int_list_map)
-
-    # train['SalePriceLog'] = train['SalePrice'].apply(log)
-
-    # train = get_train()
-    # valid = get_valid()
-    # train.drop(['SalePrice', 'PricePerLotArea'], axis=1)
-    train=train.drop(['SalePrice', 'PricePerLotArea'], axis=1)
-
-    valid=valid.drop('SalePrice', axis=1)
-    y_valid = valid.pop('SalePriceLog')
+    train = train.drop(['SalePrice', 'PricePerLotArea'], axis=1)
+    if 'SalePrice' in valid:
+        valid = valid.drop('SalePrice', axis=1)
+    y_valid = None if is_prod else valid.pop('SalePriceLog')
     return train, valid, y_valid  # = train_test_split(data['data'], data['target'], test_size=.2)
 
 
 if __name__ == '__main__':
-    train, valid = train_valid_split()
+    train, valid, y_valid = train_valid_split(True)
     print('train: %.0f valid %.0f ' % (len(train), len(valid)))
     # enrich_with_int(df)
     # list = to_int_list(df, 'MSZoning')

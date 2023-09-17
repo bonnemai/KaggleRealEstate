@@ -16,7 +16,7 @@ source ./venv/bin/activate
 * TensorFlow: RandomForestModel Log with int: Distance = 2.1824/ 2.3051
 * TensorFlow: GradientBoostedTreesModel: Distance = 1.6900
 * TensorFlow: GradientBoostedTreesModel on logs: Distance = 1.5907
-* TensorFlow: GradientBoostedTreesModel on logs with int: Distance = 1.5206/ 2.1362
+* TensorFlow: GradientBoostedTreesModel on logs with int: Distance = 1.5206/ 2.1362 -> submitted: Score: 0.12964: 788/ 3981 = top 20%
 * TensorFlow: CartModel: Distance = 3.4257
 * TensorFlow: CartModel on logs: Distance = 3.2653
 * Multi Linear Regression: Distance: Distance: 11.0667

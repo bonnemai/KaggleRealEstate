@@ -1,9 +1,10 @@
 import tensorflow as tf
 import tensorflow_decision_forests as tfdf
-from data import distance, train_valid_split
+from data import distance, train_valid_split, get_id, get_data
 from math import exp
 
-train, valid, y_valid = train_valid_split()
+is_prod: bool = False
+train, valid, y_valid = train_valid_split(is_prod)
 train_ds_pd = train.select_dtypes(include=['float64', 'int64'])
 valid_ds_pd = valid.select_dtypes(include=['float64', 'int64'])
 
@@ -34,7 +35,17 @@ print(inspector.variable_importances()["NUM_AS_ROOT"])
 
 preds = model.predict(valid_ds)
 valid_ds_pd['PredictedPriceLog'] = preds.squeeze()
-valid_ds_pd['PredictedPrice'] = valid_ds_pd['PredictedPriceLog'].apply(exp)
-valid_ds_pd['SalePriceLog'] = y_valid
-d: float = distance(valid_ds_pd)
-print('distance: %.4f' % d)
+if is_prod:
+    train_ds_pd = get_data('train')
+    valid_ds_pd['SalePrice'] = valid_ds_pd['PredictedPriceLog'].apply(exp)
+
+    print('Valid: Min: %.0f, Max: %.0f, Avg: %.0f' % (valid_ds_pd['SalePrice'].min(), valid_ds_pd['SalePrice'].max(), valid_ds_pd['SalePrice'].mean()))
+    print('Train: Min: %.0f, Max: %.0f, Avg: %.0f' % (train_ds_pd['SalePrice'].min(), train_ds_pd['SalePrice'].max(), train_ds_pd['SalePrice'].mean()))
+
+    valid_ds_pd['Id'] = get_id('test')
+    valid_ds_pd[['Id', 'SalePrice']].to_csv('./results/tensorflow_forests.csv', index=False)
+else:
+    valid_ds_pd['PredictedPrice'] = valid_ds_pd['PredictedPriceLog'].apply(exp)
+    valid_ds_pd['SalePriceLog'] = y_valid
+    d: float = distance(valid_ds_pd)
+    print('distance: %.4f' % d)
